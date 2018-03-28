@@ -13,13 +13,20 @@ class Mermaid extends React.Component {
     diagram: null
   };
 
-  componentDidMount() {
+  updateDiagram() {
     const diagram = this.props.children.toString();
     mermaid.render("title", diagram, svg => {
       this.setState({
         diagram: svg
       });
     });
+  }
+  componentDidMount() {
+    this.updateDiagram();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateDiagram();
   }
 
   render() {
@@ -57,6 +64,14 @@ class Fetch extends React.Component {
   }
   componentDidMount() {
     this.fetch();
+    if (this.props.interval) {
+      this.interval = setInterval(this.fetch.bind(this), this.props.interval);
+    }
+  }
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
   render() {
     return this.props.renderer(this.state);
@@ -186,7 +201,7 @@ const Providers = ({ data, status, error }) => {
 
 const App = () => (
   <div>
-    <Fetch url={TRAEFIK_API_URL} renderer={Providers} />
+    <Fetch interval={1000} url={TRAEFIK_API_URL} renderer={Providers} />
   </div>
 );
 
