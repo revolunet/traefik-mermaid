@@ -7,6 +7,7 @@ module.exports = {
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaFeatures": {
+            "classes": true,
             "experimentalObjectRestSpread": true,
             "jsx": true
         },
@@ -15,6 +16,9 @@ module.exports = {
     "plugins": [
         "react"
     ],
+    "globals": {
+        React: true
+    }
     "rules": {
         "indent": [
             "error",
